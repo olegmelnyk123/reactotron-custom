@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [5.2.0](https://github.com/infinitered/reactotron/compare/reactotron-react-native@5.1.18...reactotron-react-native@5.2.0) (2026-05-28)
+
+
+### Features
+
+* **reactotron-react-native:** re-export McpRedaction types for mcpRedaction config ([#1611](https://github.com/infinitered/reactotron/issues/1611)) ([51aa50a](https://github.com/infinitered/reactotron/commit/51aa50a1d6559d7aa0de95b77106d2e96fe5c24b))
+
 ### [5.1.18](https://github.com/infinitered/reactotron/compare/reactotron-react-native@5.1.17...reactotron-react-native@5.1.18) (2025-10-13)
 
 
