@@ -2,6 +2,13 @@
 
 This file was generated using [@jscutlery/semver](https://github.com/jscutlery/semver).
 
+## [3.11.0](https://github.com/infinitered/reactotron/compare/reactotron-app@3.10.0...reactotron-app@3.11.0) (2026-05-28)
+
+
+### Features
+
+* add MCP redaction filtering for sensitive data ([#1607](https://github.com/infinitered/reactotron/issues/1607)) ([c0a72de](https://github.com/infinitered/reactotron/commit/c0a72deabcf40fc2a80c2aed727f86abbb0c807a))
+
 ## [3.10.0](https://github.com/infinitered/reactotron/compare/reactotron-app@3.9.0...reactotron-app@3.10.0) (2026-04-06)
 
 
