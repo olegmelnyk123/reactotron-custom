@@ -13,6 +13,7 @@ type Props = {
   hideTopBar?: boolean
   iconSize?: number
   onPress?: () => void
+  dotColor?: string
 }
 
 function SideBarButton({ path, matchPath, ...rest }: Props) {

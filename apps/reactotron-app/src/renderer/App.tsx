@@ -14,6 +14,9 @@ import Snapshots from "./pages/state/Snapshots"
 import Overlay from "./pages/reactNative/Overlay"
 import Storybook from "./pages/reactNative/Storybook"
 import CustomCommands from "./pages/customCommands"
+import Network from "./pages/loggers/Network"
+import Mobx from "./pages/loggers/Mobx"
+import Analytics from "./pages/loggers/Analytics"
 import Help from "./pages/help"
 
 const AppContainer = styled.div`
@@ -63,6 +66,11 @@ function App() {
                 {/* React Native */}
                 <Route path="/native/overlay" element={<Overlay />} />
                 <Route path="/native/storybook" element={<Storybook />} />
+
+                {/* Loggers — one tab per app logger */}
+                <Route path="/loggers/network" element={<Network />} />
+                <Route path="/loggers/mobx" element={<Mobx />} />
+                <Route path="/loggers/analytics" element={<Analytics />} />
 
                 {/* Custom Commands */}
                 <Route path="/customCommands" element={<CustomCommands />} />

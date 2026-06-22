@@ -16,6 +16,7 @@ interface SideBarButtonComponentProps {
   hideTopBar?: boolean
   iconSize?: number
   onPress?: () => void
+  dotColor?: string
 }
 
 interface SideBarButtonProps {
@@ -50,6 +51,23 @@ const Title = styled.div`
   font-size: 12px;
 `
 
+// Wraps the icon so the status dot can sit at its top-right corner.
+const IconWrap = styled.div`
+  position: relative;
+  display: flex;
+`
+
+// Status indicator dot; color is passed in (e.g. green = analytics logging on,
+// gray = off).
+const Dot = styled.div`
+  position: absolute;
+  top: -2px;
+  right: -4px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+`
+
 function SideBarButton({
   icon: Icon,
   iconColor,
@@ -60,13 +78,21 @@ function SideBarButton({
   hideTopBar,
   iconSize,
   onPress,
+  dotColor,
 }: SideBarButtonComponentProps) {
   return (
     <Motion style={{ color: spring(isActive ? 1 : 0) }}>
       {({ color }) => (
         <Link to={path} style={{ textDecoration: "none" }} onClick={onPress}>
           <SideBarButtonContainer $hideTopBar={hideTopBar || false} $colorAnimation={color}>
-            {Icon && <Icon size={iconSize || 32} color={iconColor} />}
+            {Icon && (
+              <IconWrap>
+                <Icon size={iconSize || 32} color={iconColor} />
+                {dotColor && (
+                  <Dot style={{ backgroundColor: dotColor, boxShadow: `0 0 4px ${dotColor}` }} />
+                )}
+              </IconWrap>
+            )}
             {image && (
               <Image src={image} $hideTopBar={hideTopBar || false} $colorAnimation={color} />
             )}

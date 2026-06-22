@@ -1,12 +1,15 @@
-import React from "react"
+import React, { useContext } from "react"
+import { ReactotronContext } from "reactotron-core-ui"
 import {
   MdReorder,
   MdAssignment,
-  MdPhoneIphone,
   MdLiveHelp,
   MdWarning,
   MdOutlineMobileFriendly,
   MdMobiledataOff,
+  MdLanguage,
+  MdStorage,
+  MdInsights,
 } from "react-icons/md"
 import { FaMagic } from "react-icons/fa"
 import styled from "styled-components"
@@ -34,6 +37,21 @@ const Spacer = styled.div`
 `
 
 function SideBar({ isOpen, serverStatus }: { isOpen: boolean; serverStatus: ServerStatus }) {
+  // Analytics dot: green when GA logging is active (📈 events seen), gray when
+  // off. analytics_debug resets on every app reload, so only count events from
+  // the current connection. commands are newest-first, so the current
+  // connection's client.intro is the first one found; a 📈 belongs to this
+  // session when it sits *before* that index (i.e. is newer).
+  const { commands } = useContext(ReactotronContext)
+  const connectIdx = commands.findIndex((c) => c.type === "client.intro")
+  const analyticsActive = commands.some(
+    (c, i) =>
+      (connectIdx === -1 || i < connectIdx) &&
+      c.type === "display" &&
+      (c.payload as any)?.name?.startsWith("📈"),
+  )
+  const analyticsDotColor = analyticsActive ? "#2ecc71" : "#6b6b6b"
+
   let serverIcon = MdMobiledataOff
   let iconColor
   let serverText = "Stopped"
@@ -64,11 +82,13 @@ function SideBar({ isOpen, serverStatus }: { isOpen: boolean; serverStatus: Serv
         matchPath="/state"
         text="State"
       />
+      <SideBarButton icon={MdLanguage} path="/loggers/network" text="Network" />
+      <SideBarButton icon={MdStorage} path="/loggers/mobx" text="MobX Actions" />
       <SideBarButton
-        icon={MdPhoneIphone}
-        path="/native/overlay"
-        matchPath="/native"
-        text="React Native"
+        icon={MdInsights}
+        path="/loggers/analytics"
+        text="Analytics"
+        dotColor={analyticsDotColor}
       />
       <SideBarButton icon={FaMagic} path="/customCommands" text="Custom Commands" iconSize={25} />
 
