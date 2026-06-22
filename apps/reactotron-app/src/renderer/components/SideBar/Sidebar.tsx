@@ -37,19 +37,18 @@ const Spacer = styled.div`
 `
 
 function SideBar({ isOpen, serverStatus }: { isOpen: boolean; serverStatus: ServerStatus }) {
-  // Analytics dot: green when GA logging is active (📈 events seen), gray when
-  // off. analytics_debug resets on every app reload, so only count events from
-  // the current connection. commands are newest-first, so the current
-  // connection's client.intro is the first one found; a 📈 belongs to this
-  // session when it sits *before* that index (i.e. is newer).
+  // Analytics dot: green when GA logging is on, gray when off. The app persists
+  // analytics_debug to AsyncStorage; Reactotron reports each write as an
+  // asyncStorage.mutation. commands are newest-first, so the first matching
+  // mutation is the latest value.
   const { commands } = useContext(ReactotronContext)
-  const connectIdx = commands.findIndex((c) => c.type === "client.intro")
-  const analyticsActive = commands.some(
-    (c, i) =>
-      (connectIdx === -1 || i < connectIdx) &&
-      c.type === "display" &&
-      (c.payload as any)?.name?.startsWith("📈"),
+  const latestDebug = commands.find(
+    (c) =>
+      c.type === "asyncStorage.mutation" &&
+      (c.payload as any)?.action === "setItem" &&
+      (c.payload as any)?.data?.key === "analytics_debug",
   )
+  const analyticsActive = String((latestDebug?.payload as any)?.data?.value) === "true"
   const analyticsDotColor = analyticsActive ? "#2ecc71" : "#6b6b6b"
 
   let serverIcon = MdMobiledataOff

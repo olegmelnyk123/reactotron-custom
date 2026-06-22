@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import {
   ReactotronContext,
   ContentView,
@@ -57,8 +57,18 @@ function getLatestChanges(commands: any[]) {
 }
 
 function Subscriptions() {
-  const { commands, openSubscriptionModal } = useContext(ReactotronContext)
-  const { removeSubscription, clearSubscriptions } = useContext(StateContext)
+  const { commands, openSubscriptionModal, sendCommand } = useContext(ReactotronContext)
+  const { subscriptions, removeSubscription, clearSubscriptions } = useContext(StateContext)
+
+  // Only stream state from the app while this tab is mounted. Subscribe on
+  // enter, pause (empty paths) on leave, so the app stops serializing the store
+  // graph on every change when you're viewing another tab.
+  useEffect(() => {
+    sendCommand("state.values.subscribe", { paths: subscriptions })
+    return () => {
+      sendCommand("state.values.subscribe", { paths: [] })
+    }
+  }, [sendCommand, subscriptions])
 
   // Get setup to show the right keybind!
   const subscriptionModalKeybind = getApplicationKeyMap().OpenSubscriptionModal

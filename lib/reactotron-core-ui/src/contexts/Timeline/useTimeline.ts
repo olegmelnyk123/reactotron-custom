@@ -1,5 +1,6 @@
 import { useReducer, useEffect } from "react"
 
+import { CommandType } from "reactotron-core-contract"
 import type { CommandTypeKey } from "reactotron-core-contract"
 
 export enum StorageKey {
@@ -80,7 +81,12 @@ function useTimeline() {
   // Load some values
   useEffect(() => {
     const isReversed = localStorage.getItem(StorageKey.ReversedOrder) === "reversed"
-    const hiddenCommands = JSON.parse(localStorage.getItem(StorageKey.HiddenCommands) || "[]")
+    // Default-hide the "SUBSCRIPTIONS" (state.values.change) bucket on first run;
+    // a saved choice (even an empty array) is respected once present.
+    const storedHidden = localStorage.getItem(StorageKey.HiddenCommands)
+    const hiddenCommands = storedHidden
+      ? JSON.parse(storedHidden)
+      : [CommandType.StateValuesChange]
 
     dispatch({
       type: isReversed ? TimelineActionType.OrderReverse : TimelineActionType.OrderRegular,

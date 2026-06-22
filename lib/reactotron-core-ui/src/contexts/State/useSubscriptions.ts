@@ -43,17 +43,22 @@ function useSubscriptions() {
 
   // Load up saved subscriptions!
   useEffect(() => {
-    const subscriptions = JSON.parse(localStorage.getItem(StorageKey.Subscriptions) || "[]")
+    // Default to subscribing the whole store root ("") on first run so the State
+    // tab shows live data without a manual subscription; a saved choice (even an
+    // empty array after the user clears it) is respected once present.
+    const stored = localStorage.getItem(StorageKey.Subscriptions)
+    const subscriptions = stored ? JSON.parse(stored) : [""]
 
     dispatch({
       type: "SUBSCRIPTIONS_SET",
       payload: subscriptions,
     })
 
-    if (subscriptions.length === 0) return
-
-    sendSubscriptions(subscriptions)
-  }, [sendSubscriptions])
+    // NOTE: we intentionally do NOT subscribe here. Subscribing globally on load
+    // makes the app stream (and serialize) the store graph on every change even
+    // when the State tab isn't open. The State page subscribes on mount and
+    // pauses on unmount instead, so the app only streams while you're viewing it.
+  }, [])
 
   // Setup event handlers
   const addSubscription = (path: string) => {
