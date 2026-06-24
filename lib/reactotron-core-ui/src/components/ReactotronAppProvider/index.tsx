@@ -2,6 +2,8 @@ import React from "react"
 import styled, { ThemeProvider } from "styled-components"
 
 import useColorScheme from "../../hooks/useColorScheme"
+import useThemeMode from "../../hooks/useThemeMode"
+import ThemePreferenceContext from "../../contexts/ThemePreference"
 import { themes } from "../../themes"
 
 const ReactotronContainer = styled.div`
@@ -13,12 +15,16 @@ const ReactotronContainer = styled.div`
 `
 
 const ReactotronAppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const colorScheme = useColorScheme()
+  const systemScheme = useColorScheme()
+  const [mode, setMode] = useThemeMode()
+  const resolvedScheme = mode === "system" ? systemScheme : mode
 
   return (
-    <ThemeProvider theme={themes[colorScheme]}>
-      <ReactotronContainer>{children}</ReactotronContainer>
-    </ThemeProvider>
+    <ThemePreferenceContext.Provider value={{ mode, resolvedScheme, setMode }}>
+      <ThemeProvider theme={themes[resolvedScheme]}>
+        <ReactotronContainer>{children}</ReactotronContainer>
+      </ThemeProvider>
+    </ThemePreferenceContext.Provider>
   )
 }
 

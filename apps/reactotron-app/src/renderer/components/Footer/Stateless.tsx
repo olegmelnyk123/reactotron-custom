@@ -1,6 +1,14 @@
 import React from "react"
 import styled from "styled-components"
-import { MdSwapVert as ExpandIcon, MdSettings as SettingsIcon, MdShield as ShieldIcon } from "react-icons/md"
+import {
+  MdSwapVert as ExpandIcon,
+  MdSettings as SettingsIcon,
+  MdShield as ShieldIcon,
+  MdLightMode as LightIcon,
+  MdDarkMode as DarkIcon,
+  MdBrightnessAuto as SystemIcon,
+} from "react-icons/md"
+import type { ThemeMode } from "reactotron-core-ui"
 
 import config from "../../config"
 import {
@@ -97,6 +105,25 @@ const McpSettingsButton = styled.div`
   }
 `
 
+const ThemeButton = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 3px;
+  color: ${(props) => props.theme.foregroundDark};
+  &:hover {
+    color: ${(props) => props.theme.foreground};
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+`
+
+const THEME_ICONS: Record<ThemeMode, React.ComponentType<{ size?: number }>> = {
+  light: LightIcon,
+  dark: DarkIcon,
+  system: SystemIcon,
+}
+
 const RedactionBadge = styled.span<{ $warning?: boolean }>`
   display: flex;
   align-items: center;
@@ -164,6 +191,8 @@ interface Props {
   onToggleMcp: () => void
   mcpRedactionEnforced: boolean
   onOpenMcpSettings: () => void
+  themeMode: ThemeMode
+  onCycleTheme: () => void
 }
 
 function Header({
@@ -178,8 +207,11 @@ function Header({
   onToggleMcp,
   mcpRedactionEnforced,
   onOpenMcpSettings,
+  themeMode,
+  onCycleTheme,
 }: Props) {
   const renderMethod = isOpen ? renderExpanded : renderCollapsed
+  const ThemeIcon = THEME_ICONS[themeMode]
 
   return (
     <Container>
@@ -208,6 +240,12 @@ function Header({
             </McpSettingsButton>
           )}
         </McpGroup>
+        <ThemeButton
+          onClick={(e) => { e.stopPropagation(); onCycleTheme() }}
+          title={`Theme: ${themeMode} (click to change)`}
+        >
+          <ThemeIcon size={16} />
+        </ThemeButton>
         <ExpandContainer onClick={() => setIsOpen(!isOpen)}>
           <ExpandIcon size={18} />
         </ExpandContainer>

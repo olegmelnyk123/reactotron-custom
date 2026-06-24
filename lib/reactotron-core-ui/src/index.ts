@@ -22,6 +22,7 @@ import CustomCommandsContext, { CustomCommandsProvider } from "./contexts/Custom
 import ReactNativeContext, { ReactNativeProvider } from "./contexts/ReactNative"
 import StateContext, { StateProvider } from "./contexts/State"
 import TimelineContext, { TimelineProvider } from "./contexts/Timeline"
+import ThemePreferenceContext, { useThemePreference } from "./contexts/ThemePreference"
 
 // Modals
 import DispatchActionModal from "./modals/DispatchActionModal"
@@ -62,6 +63,7 @@ export {
   TimelineCommand,
   timelineCommandResolver,
   TimelineCommandTabButton,
+  ThemePreferenceContext,
   TimelineContext,
   TimelineFilterModal,
   TimelineProvider,
@@ -69,7 +71,9 @@ export {
   Tooltip,
   TreeView,
   TreeViewDiff,
+  useThemePreference,
 }
 
 export type { CustomCommand } from "./contexts/CustomCommands/useCustomCommands"
 export type { Snapshot } from "./contexts/State/useSnapshots"
+export type { ThemeMode } from "./hooks/useThemeMode"
