@@ -12,7 +12,6 @@ import Timeline from "./pages/timeline"
 import Subscriptions from "./pages/state/Subscriptions"
 import Snapshots from "./pages/state/Snapshots"
 import Overlay from "./pages/reactNative/Overlay"
-import Storybook from "./pages/reactNative/Storybook"
 import CustomCommands from "./pages/customCommands"
 import Network from "./pages/loggers/Network"
 import Mobx from "./pages/loggers/Mobx"
@@ -65,7 +64,6 @@ function App() {
 
                 {/* React Native */}
                 <Route path="/native/overlay" element={<Overlay />} />
-                <Route path="/native/storybook" element={<Storybook />} />
 
                 {/* Loggers — one tab per app logger */}
                 <Route path="/loggers/network" element={<Network />} />

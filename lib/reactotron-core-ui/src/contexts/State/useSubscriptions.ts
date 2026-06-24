@@ -77,7 +77,7 @@ function useSubscriptions() {
   const removeSubscription = (path: string) => {
     const idx = state.subscriptions.indexOf(path)
 
-    if (idx < 0) return;
+    if (idx < 0) return
 
     const newSubscriptions = [
       ...state.subscriptions.slice(0, idx),
